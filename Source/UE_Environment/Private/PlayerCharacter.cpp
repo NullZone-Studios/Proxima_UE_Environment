@@ -32,3 +32,36 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
+void APlayerCharacter::UpdateCooldownStats() {
+	TrueAttackCooldown = BaseAttackCooldown / (1 + Haste);
+	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste);
+	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste);
+	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste);
+}
+
+void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
+	if (this->AttackCooldown > 0) {
+		this->AttackCooldown -= DeltaTime;
+	}
+	if (this->Ability1Cooldown > 0) {
+		this->Ability1Cooldown -= DeltaTime;
+	}
+	if (this->Ability2Cooldown > 0) {
+		this->Ability2Cooldown -= DeltaTime;
+	}
+	if (this->Ability3Cooldown > 0) {
+		this->Ability3Cooldown -= DeltaTime;
+	}
+}
+
+void APlayerCharacter::RegenerateHealth(float DeltaTime) {
+	
+	if (this->Health < this->MaxHealth) {
+		this->Health += this->HealthRegeneration * DeltaTime;
+		if (this->Health > this->MaxHealth) {
+			this->Health = this->MaxHealth;
+		}
+	}
+}
+
+

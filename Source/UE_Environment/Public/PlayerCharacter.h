@@ -53,6 +53,30 @@ protected:
 	int32 Level;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
 	float LevelUpMultiplier;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAttackCooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility1Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility2Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility3Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float TrueAttackCooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float TrueAbility1Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float TrueAbility2Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float TrueAbility3Cooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float AttackCooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability1CooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability2CooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability3CooldownTimer;
 
 public:	
 	// Called every frame
@@ -61,4 +85,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateCooldowns(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateCooldownStats();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void RegenerateHealth(float DeltaTime);
 };
