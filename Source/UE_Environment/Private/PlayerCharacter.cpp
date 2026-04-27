@@ -33,24 +33,24 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 void APlayerCharacter::UpdateCooldownStats() {
-	TrueAttackCooldown = BaseAttackCooldown / (1 + Haste);
+	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed);
 	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste);
 	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste);
 	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste);
 }
 
 void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
-	if (this->AttackCooldown > 0) {
-		this->AttackCooldown -= DeltaTime;
+	if (this->AttackCooldownTimer > 0) {
+		this->AttackCooldownTimer -= DeltaTime;
 	}
-	if (this->Ability1Cooldown > 0) {
-		this->Ability1Cooldown -= DeltaTime;
+	if (this->Ability1CooldownTimer > 0) {
+		this->Ability1CooldownTimer -= DeltaTime;
 	}
-	if (this->Ability2Cooldown > 0) {
-		this->Ability2Cooldown -= DeltaTime;
+	if (this->Ability2CooldownTimer > 0) {
+		this->Ability2CooldownTimer -= DeltaTime;
 	}
-	if (this->Ability3Cooldown > 0) {
-		this->Ability3Cooldown -= DeltaTime;
+	if (this->Ability3CooldownTimer > 0) {
+		this->Ability3CooldownTimer -= DeltaTime;
 	}
 }
 
@@ -63,5 +63,20 @@ void APlayerCharacter::RegenerateHealth(float DeltaTime) {
 		}
 	}
 }
+
+void APlayerCharacter::ResetAttackCooldown(){
+	this->AttackCooldownTimer = this->TrueAttackCooldown;
+}
+void APlayerCharacter::ResetAbility1Cooldown(){
+	this->Ability1CooldownTimer = this->TrueAbility1Cooldown;
+}
+void APlayerCharacter::ResetAbility2Cooldown(){
+	this->Ability2CooldownTimer = this->TrueAbility2Cooldown;
+}
+void APlayerCharacter::ResetAbility3Cooldown(){
+	this->Ability3CooldownTimer = this->TrueAbility3Cooldown;
+}
+
+
 
 

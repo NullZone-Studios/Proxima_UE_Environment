@@ -61,13 +61,13 @@ protected:
 	float BaseAbility2Cooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
 	float BaseAbility3Cooldown;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAttackCooldown;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAbility1Cooldown;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAbility2Cooldown;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAbility3Cooldown;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float AttackCooldownTimer;
@@ -93,4 +93,16 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual void RegenerateHealth(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAttackCooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility1Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility2Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility3Cooldown();
 };
