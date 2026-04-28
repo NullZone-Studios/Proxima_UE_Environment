@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "DamageEntity.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
-class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter
+class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter, public IDamageEntity
 {
 	GENERATED_BODY()
 
@@ -77,6 +78,10 @@ protected:
 	float Ability2CooldownTimer;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float Ability3CooldownTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float InvulnerabilityDuration;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float InvulnerabilityTimer;
 
 public:	
 	// Called every frame
@@ -105,4 +110,39 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual void ResetAbility3Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAttackOffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility1OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility2OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility3OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsInvulnerable() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetInvulnerability();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetTempInvulnerability(float TempInvulnerabilityDuration);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateInvulnerability(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void Death();
+
+	// Inherited via IDamageEntity
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	bool IsAlive() const override;
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void DamageOverTime(float DOTAmount, float DOTDuration) override;
 };

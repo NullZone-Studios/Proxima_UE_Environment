@@ -77,6 +77,81 @@ void APlayerCharacter::ResetAbility3Cooldown(){
 	this->Ability3CooldownTimer = this->TrueAbility3Cooldown;
 }
 
+bool APlayerCharacter::IsAttackOffCooldown() const
+{
+	return AttackCooldownTimer <= 0;
+}
 
+bool APlayerCharacter::IsAbility1OffCooldown() const
+{
+	return Ability1CooldownTimer <= 0;
+}
 
+bool APlayerCharacter::IsAbility2OffCooldown() const
+{
+	return Ability2CooldownTimer <= 0;
+}
 
+bool APlayerCharacter::IsAbility3OffCooldown() const
+{
+	return Ability3CooldownTimer <= 0;
+}
+
+void APlayerCharacter::UpdateInvulnerability(float DeltaTime)
+{
+	if (this->InvulnerabilityTimer > 0) {
+		this->InvulnerabilityTimer -= DeltaTime;
+		if (this->InvulnerabilityTimer < 0) {
+			this->InvulnerabilityTimer = 0;
+		}
+	}
+}
+
+void APlayerCharacter::Death()
+{
+	
+}
+
+bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
+{
+	if (!invulnerable || CircumventInvulnerability) {
+		Health -= DamageAmount;
+		if (Health < 0) {
+			Health = 0;
+		}
+		if (CircumventInvulnerability) {
+			return false;
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool APlayerCharacter::IsAlive() const
+{
+	return Health >= 0;
+}
+
+void APlayerCharacter::DamageOverTime(float DOTAmount, float DOTDuration)
+{
+	
+}
+
+bool APlayerCharacter::IsInvulnerable() const
+{
+	return InvulnerabilityTimer > 0;
+}
+
+void APlayerCharacter::ResetInvulnerability()
+{
+	this->InvulnerabilityTimer = this->InvulnerabilityDuration;
+}
+
+void APlayerCharacter::ResetTempInvulnerability(float TempInvulnerabilityDuration)
+{
+	if (TempInvulnerabilityDuration > this->InvulnerabilityTimer) {
+		this->InvulnerabilityTimer = TempInvulnerabilityDuration;
+	}
+}
