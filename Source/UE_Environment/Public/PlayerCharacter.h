@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "DamageEntity.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
-class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter
+class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter, public IDamageEntity
 {
 	GENERATED_BODY()
 
@@ -19,18 +20,68 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
 	float Health;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
 	float MaxHealth;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
+	float HealthRegeneration;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Damage;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-	float Defense;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float AttackSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Defense")
+	float Defense;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
 	float MovementSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float CriticalChance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float CriticalDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float Duration;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float Range;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float Haste;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	float XP_Gain;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	float XP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	float NextLevelXP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	int32 Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	float LevelUpMultiplier;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAttackCooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility1Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility2Cooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float BaseAbility3Cooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float TrueAttackCooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float TrueAbility1Cooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float TrueAbility2Cooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float TrueAbility3Cooldown;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float AttackCooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability1CooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability2CooldownTimer;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float Ability3CooldownTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float InvulnerabilityDuration;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float InvulnerabilityTimer;
 
 public:	
 	// Called every frame
@@ -39,4 +90,59 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateCooldowns(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateCooldownStats();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void RegenerateHealth(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAttackCooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility1Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility2Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetAbility3Cooldown();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAttackOffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility1OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility2OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsAbility3OffCooldown() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual bool IsInvulnerable() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetInvulnerability();
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void ResetTempInvulnerability(float TempInvulnerabilityDuration);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual void UpdateInvulnerability(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual float GetNormalizedAttackSpeed() const;
+
+	// Inherited via IDamageEntity
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	bool IsAlive() const override;
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void DamageOverTime(float DOTAmount, float DOTDuration) override;
 };
