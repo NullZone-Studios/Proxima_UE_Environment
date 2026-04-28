@@ -135,9 +135,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual void UpdateInvulnerability(float DeltaTime);
 
-	UFUNCTION(BlueprintCallable, Category = "Player Stats")
-	virtual void Death();
-
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;

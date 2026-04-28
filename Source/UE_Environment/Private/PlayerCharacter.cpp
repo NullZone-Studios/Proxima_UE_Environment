@@ -107,11 +107,6 @@ void APlayerCharacter::UpdateInvulnerability(float DeltaTime)
 	}
 }
 
-void APlayerCharacter::Death()
-{
-	
-}
-
 bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
 	if (!invulnerable || CircumventInvulnerability) {
