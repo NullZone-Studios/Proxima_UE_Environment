@@ -107,6 +107,11 @@ void APlayerCharacter::UpdateInvulnerability(float DeltaTime)
 	}
 }
 
+float APlayerCharacter::GetNormalizedAttackSpeed() const
+{
+	return 1 / AttackSpeed;
+}
+
 bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
 	if (!invulnerable || CircumventInvulnerability) {
