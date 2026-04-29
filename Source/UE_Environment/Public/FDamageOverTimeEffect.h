@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Class.h"
+#include "EDamageOverTimeTypes.h"
 #include "FDamageOverTimeEffect.generated.h"
 
 /**
@@ -15,17 +16,20 @@ class UE_ENVIRONMENT_API UFDamageOverTimeEffect : public UStruct
 	GENERATED_BODY()
 	
 public:
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float TotalDamage = 0.0f;
 
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float Duration = 1.0f;
 
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float TimeRemaining = 0.0f;
 
-    UPROPERTY()
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float DamagePerSecond = 0.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EDamageOverTimeTypes DamageType;
 
     bool IsActive() const
     {

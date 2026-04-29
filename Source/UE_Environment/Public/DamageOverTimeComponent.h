@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "FDamageOverTimeEffect.h"
 #include "DamageEntity.h"
+#include "EDamageOverTimeTypes.h"
+#include "EDOTStackingRules.h"
 #include "DamageOverTimeComponent.generated.h"
 
 
@@ -30,6 +32,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Damage Over Time")
-	void AddDamageOverTime(float TotalDamage, float Duration);
+	virtual void AddDamageOverTime(float TotalDamage, float Duration, EDamageOverTimeTypes DamageType);
 
+	virtual int32 GetMaxStacks(EDamageOverTimeTypes Type);
+
+	virtual EDOTStackingRules GetStackingRule(EDamageOverTimeTypes Type);
 };
