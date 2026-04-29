@@ -35,10 +35,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 void APlayerCharacter::UpdateCooldownStats() {
-	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed);
-	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste);
-	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste);
-	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste);
+	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed / 100);
+	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste / 100);
+	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste / 100);
+	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste / 100);
 }
 
 void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
@@ -133,7 +133,7 @@ bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool Ci
 
 bool APlayerCharacter::IsAlive() const
 {
-	return Health >= 0;
+	return Health > 0;
 }
 
 
@@ -144,7 +144,7 @@ float APlayerCharacter::GetDefenseCalculation() const
 
 bool APlayerCharacter::IsInvulnerable() const
 {
-	return InvulnerabilityTimer >= 0;
+	return InvulnerabilityTimer > 0;
 }
 
 void APlayerCharacter::ResetInvulnerability()
