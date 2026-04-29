@@ -9,6 +9,8 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DamageOverTimeComponent = CreateDefaultSubobject<UDamageOverTimeComponent>(TEXT("DamageOverTimeComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -115,7 +117,7 @@ float APlayerCharacter::GetNormalizedAttackSpeed() const
 bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
 	if (!invulnerable || CircumventInvulnerability) {
-		Health -= DamageAmount;
+		Health -= DamageAmount / GetDefenseCalculation();
 		if (Health < 0) {
 			Health = 0;
 		}
@@ -134,14 +136,15 @@ bool APlayerCharacter::IsAlive() const
 	return Health >= 0;
 }
 
-void APlayerCharacter::DamageOverTime(float DOTAmount, float DOTDuration)
+
+float APlayerCharacter::GetDefenseCalculation() const
 {
-	
+	return ( Defense / 100.0f ) + 1;
 }
 
 bool APlayerCharacter::IsInvulnerable() const
 {
-	return InvulnerabilityTimer > 0;
+	return InvulnerabilityTimer >= 0;
 }
 
 void APlayerCharacter::ResetInvulnerability()

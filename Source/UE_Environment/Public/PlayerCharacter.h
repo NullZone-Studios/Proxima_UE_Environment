@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "DamageEntity.h"
+#include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -15,6 +16,10 @@ class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter, public IDamageEnt
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Damage", meta = (AllowPrivateAccess = "true"))
+	UDamageOverTimeComponent* DamageOverTimeComponent;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -144,5 +149,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsAlive() const override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")
-	void DamageOverTime(float DOTAmount, float DOTDuration) override;
+	float GetDefenseCalculation() const override;
 };

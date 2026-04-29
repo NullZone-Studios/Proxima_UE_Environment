@@ -24,5 +24,9 @@ class UE_ENVIRONMENT_API IDamageEntity
 public:
 	virtual bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) = 0;
 	virtual bool IsAlive() const = 0;
-	virtual void DamageOverTime(float DOTAmount, float DOTDuration) = 0;
+	virtual float GetDefenseCalculation() const = 0;
+	virtual void ResetInvulnerability() = 0;
+	virtual void ResetTempInvulnerability(float TempInvulnerabilityDuration) = 0;
+	virtual void UpdateInvulnerability(float DeltaTime) = 0;
+	virtual bool IsInvulnerable() const = 0;
 };
