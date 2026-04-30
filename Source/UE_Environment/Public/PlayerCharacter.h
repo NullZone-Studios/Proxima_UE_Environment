@@ -87,6 +87,10 @@ protected:
 	float InvulnerabilityDuration;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float InvulnerabilityTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
+	float HealthRegenDelay;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
+	float HealthRegenDelayTimer;
 
 public:	
 	// Called every frame

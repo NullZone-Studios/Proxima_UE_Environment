@@ -44,6 +44,9 @@ bool ABaseEnemy::TakeDamage(float DamageAmount, bool invulnerable, bool Circumve
 		if (CircumventInvulnerability) {
 			return false;
 		}
+		if (HealthRegen > 0 && HealthRegenDelay > 0) {
+			HealthRegenDelayTimer = HealthRegenDelay;
+		}
 		return true;
 	}
 	else {
@@ -86,5 +89,23 @@ void ABaseEnemy::UpdateInvulnerability(float DeltaTime)
 bool ABaseEnemy::IsInvulnerable() const
 {
 	return InvulnerabilityTimer >= 0;
+}
+
+void APlayerCharacter::RegenerateHealth(float DeltaTime) {
+	if (this->HealthRegen <= 0 || this->HealthRegenDelay <= 0) {
+		return;
+	}
+
+	if (this->HealthRegenDelayTimer > 0) {
+		this->HealthRegenDelayTimer -= DeltaTime;
+		return;
+	}
+
+	if (this->Health < this->MaxHealth) {
+		this->Health += this->HealthRegeneration * DeltaTime;
+		if (this->Health > this->MaxHealth) {
+			this->Health = this->MaxHealth;
+		}
+	}
 }
 

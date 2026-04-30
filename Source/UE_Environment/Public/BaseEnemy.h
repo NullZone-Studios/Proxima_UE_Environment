@@ -29,7 +29,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Health")
 	float MaxHealth;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Health")
-	float CurrentHealth;
+	float HealthRegen;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
 	float Defense;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
@@ -42,6 +42,13 @@ protected:
 	float InvulnerabilityDuration;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy Stats|Base Stats|Combat")
 	float InvulnerabilityTimer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
+	float XPReward;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
+	float HealthRegenDelay;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy Stats|Base Stats|Combat")
+	float HealthRegenDelayTimer;
+
 
 public:	
 	// Called every frame
@@ -58,6 +65,8 @@ public:
 	bool IsAlive() const override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	float GetDefenseCalculation() const override;
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	virtual void RegenerateHealth(float DeltaTime);
 
 
 	// Inherited via IDamageEntity
