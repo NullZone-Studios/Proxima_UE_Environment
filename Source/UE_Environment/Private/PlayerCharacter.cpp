@@ -57,7 +57,7 @@ void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
 }
 
 void APlayerCharacter::RegenerateHealth(float DeltaTime) {
-	if (this->HealthRegen <= 0 || this->HealthRegenDelay <= 0) {
+	if (this->HealthRegeneration <= 0 || this->HealthRegenDelay <= 0) {
 		return;
 	}
 
