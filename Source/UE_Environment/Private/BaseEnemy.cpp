@@ -91,7 +91,7 @@ bool ABaseEnemy::IsInvulnerable() const
 	return InvulnerabilityTimer >= 0;
 }
 
-void APlayerCharacter::RegenerateHealth(float DeltaTime) {
+void ABaseEnemy::RegenerateHealth(float DeltaTime) {
 	if (this->HealthRegen <= 0 || this->HealthRegenDelay <= 0) {
 		return;
 	}
@@ -102,7 +102,7 @@ void APlayerCharacter::RegenerateHealth(float DeltaTime) {
 	}
 
 	if (this->Health < this->MaxHealth) {
-		this->Health += this->HealthRegeneration * DeltaTime;
+		this->Health += this->HealthRegen * DeltaTime;
 		if (this->Health > this->MaxHealth) {
 			this->Health = this->MaxHealth;
 		}
