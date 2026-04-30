@@ -8,6 +8,7 @@
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
 
+
 UCLASS()
 class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter, public IDamageEntity
 {
@@ -92,7 +93,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -134,7 +135,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual bool IsInvulnerable() const;
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual void ResetInvulnerability();
 

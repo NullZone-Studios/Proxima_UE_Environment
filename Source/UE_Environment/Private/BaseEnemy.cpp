@@ -108,4 +108,3 @@ void ABaseEnemy::RegenerateHealth(float DeltaTime) {
 		}
 	}
 }
-
