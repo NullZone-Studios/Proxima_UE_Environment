@@ -80,6 +80,13 @@ void UDamageOverTimeComponent::AddDamageOverTime(float TotalDamage, float Durati
 			case EDOTStackingRules::IgnoreNew:
 				return;
 
+			case EDOTStackingRules::IntensifyAndRefresh:
+				Dot->TotalDamage += TotalDamage;
+				Dot->Duration = FMath::Max(Dot->Duration, Duration);
+				Dot->TimeRemaining = Dot->Duration;
+				Dot->DamagePerSecond = Dot->TotalDamage / Dot->Duration;
+				return;
+
 			default:
 				break;
 			};
@@ -125,6 +132,10 @@ EDOTStackingRules UDamageOverTimeComponent::GetStackingRule(EDamageOverTimeTypes
 
 	case EDamageOverTimeTypes::Shock:
 		return EDOTStackingRules::ReplaceExisting;
+
+	case EDamageOverTimeTypes::Resonance:
+		return EDOTStackingRules::IntensifyAndRefresh;
+
 	default:
 		return EDOTStackingRules::StackNew;
 	};
@@ -144,6 +155,9 @@ int32 UDamageOverTimeComponent::GetMaxStacks(EDamageOverTimeTypes Type)
 		return 5;
 
 	case EDamageOverTimeTypes::Shock:
+		return 1;
+	
+	case EDamageOverTimeTypes::Resonance:
 		return 1;
 
 	default:

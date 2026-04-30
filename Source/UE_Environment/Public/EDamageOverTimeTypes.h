@@ -15,5 +15,6 @@ enum class EDamageOverTimeTypes : uint8
 	Poison UMETA(DisplayName = "Poison"),
 	Burn   UMETA(DisplayName = "Burn"),
 	Bleed  UMETA(DisplayName = "Bleed"),
-	Shock  UMETA(DisplayName = "Shock")
+	Shock  UMETA(DisplayName = "Shock"),
+	Resonance UMETA(DisplayName = "Resonance")
 };
