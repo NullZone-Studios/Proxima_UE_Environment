@@ -56,7 +56,7 @@ bool ABaseEnemy::TakeDamage(float DamageAmount, bool invulnerable, bool Circumve
 
 bool ABaseEnemy::IsAlive() const
 {
-	return Health >= 0;
+	return Health > 0;
 }
 
 float ABaseEnemy::GetDefenseCalculation() const
@@ -88,7 +88,7 @@ void ABaseEnemy::UpdateInvulnerability(float DeltaTime)
 
 bool ABaseEnemy::IsInvulnerable() const
 {
-	return InvulnerabilityTimer >= 0;
+	return InvulnerabilityTimer > 0;
 }
 
 void ABaseEnemy::RegenerateHealth(float DeltaTime) {

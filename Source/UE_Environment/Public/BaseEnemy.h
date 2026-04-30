@@ -82,5 +82,4 @@ public:
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsInvulnerable() const override;
-
 };
