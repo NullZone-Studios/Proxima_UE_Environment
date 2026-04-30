@@ -132,7 +132,7 @@ bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool Ci
 		if (CircumventInvulnerability) {
 			return false;
 		}
-		if (HealthRegen > 0 && HealthRegenDelay > 0) {
+		if (HealthRegeneration > 0 && HealthRegenDelay > 0) {
 			HealthRegenDelayTimer = HealthRegenDelay;
 		}
 		return true;
