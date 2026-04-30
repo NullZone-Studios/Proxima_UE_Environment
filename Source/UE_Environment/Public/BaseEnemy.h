@@ -70,14 +70,17 @@ public:
 
 
 	// Inherited via IDamageEntity
+	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void ResetInvulnerability() override;
 
+	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void ResetTempInvulnerability(float TempInvulnerabilityDuration) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void UpdateInvulnerability(float DeltaTime) override;
 
-
 	// Inherited via IDamageEntity
+	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsInvulnerable() const override;
 
 };
