@@ -9,6 +9,8 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DamageOverTimeComponent = CreateDefaultSubobject<UDamageOverTimeComponent>(TEXT("DamageOverTimeComponent"));
+
 }
 
 // Called when the game starts or when spawned
@@ -33,10 +35,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 void APlayerCharacter::UpdateCooldownStats() {
-	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed);
-	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste);
-	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste);
-	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste);
+	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed / 100);
+	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste / 100);
+	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste / 100);
+	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste / 100);
 }
 
 void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
@@ -55,6 +57,14 @@ void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
 }
 
 void APlayerCharacter::RegenerateHealth(float DeltaTime) {
+	if (this->HealthRegen <= 0 || this->HealthRegenDelay <= 0) {
+		return;
+	}
+
+	if (this->HealthRegenDelayTimer > 0) {
+		this->HealthRegenDelayTimer -= DeltaTime;
+		return;
+	}
 	
 	if (this->Health < this->MaxHealth) {
 		this->Health += this->HealthRegeneration * DeltaTime;
@@ -115,12 +125,15 @@ float APlayerCharacter::GetNormalizedAttackSpeed() const
 bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
 	if (!invulnerable || CircumventInvulnerability) {
-		Health -= DamageAmount;
+		Health -= DamageAmount / GetDefenseCalculation();
 		if (Health < 0) {
 			Health = 0;
 		}
 		if (CircumventInvulnerability) {
 			return false;
+		}
+		if (HealthRegen > 0 && HealthRegenDelay > 0) {
+			HealthRegenDelayTimer = HealthRegenDelay;
 		}
 		return true;
 	}
@@ -131,12 +144,13 @@ bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool Ci
 
 bool APlayerCharacter::IsAlive() const
 {
-	return Health >= 0;
+	return Health > 0;
 }
 
-void APlayerCharacter::DamageOverTime(float DOTAmount, float DOTDuration)
+
+float APlayerCharacter::GetDefenseCalculation() const
 {
-	
+	return ( Defense / 100.0f ) + 1;
 }
 
 bool APlayerCharacter::IsInvulnerable() const
