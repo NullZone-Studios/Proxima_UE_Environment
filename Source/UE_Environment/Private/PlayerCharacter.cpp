@@ -10,14 +10,27 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DamageOverTimeComponent = CreateDefaultSubobject<UDamageOverTimeComponent>(TEXT("DamageOverTimeComponent"));
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArmComponent->TargetArmLength = 1000.0f;
+	SpringArmComponent->SetupAttachment(RootComponent);
+	SpringArmComponent->SetRelativeRotation(FRotator(-50.0f, 0.0f, 0.0f));
 
+	PlayerCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+	PlayerCameraComponent->SetupAttachment(SpringArmComponent);
+	PlayerCameraComponent->SetRelativeRotation(FRotator(-3.5f, -0.0f, 0.0f));
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
+
+	if (PlayerMovementComponentClass) {
+		PlayerMovementComponent = NewObject<UActorComponent>(this, PlayerMovementComponentClass);
+		PlayerMovementComponent->RegisterComponent();
+		AddInstanceComponent(PlayerMovementComponent);
+	}
+
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -168,4 +181,10 @@ void APlayerCharacter::ResetTempInvulnerability(float TempInvulnerabilityDuratio
 	if (TempInvulnerabilityDuration > this->InvulnerabilityTimer) {
 		this->InvulnerabilityTimer = TempInvulnerabilityDuration;
 	}
+}
+
+void APlayerCharacter::GainXP(float Amount)
+{
+	XP += Amount;
+	OnXPGained.Broadcast(Amount);
 }

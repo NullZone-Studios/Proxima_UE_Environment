@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "DamageEntity.h"
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnXPGained, float, Amount);
 
 UCLASS()
 class UE_ENVIRONMENT_API APlayerCharacter : public ACharacter, public IDamageEntity
@@ -18,9 +21,20 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Damage", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Damage", meta = (AllowPrivateAccess = "true"))
 	UDamageOverTimeComponent* DamageOverTimeComponent;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Components|Movement")
+	TSubclassOf<UActorComponent> PlayerMovementComponentClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Movement", meta = (AllowPrivateAccess = "true"))
+	class UActorComponent* PlayerMovementComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* PlayerCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* SpringArmComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -92,6 +106,8 @@ protected:
 	float HealthRegenDelay;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer;
+	UPROPERTY(BlueprintAssignable)
+	FOnXPGained OnXPGained;
 
 public:
 	// Called every frame
@@ -155,4 +171,6 @@ public:
 	bool IsAlive() const override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	float GetDefenseCalculation() const override;
+	UFUNCTION(BlueprintCallable, Category = "XP")
+	void GainXP(float Amount);
 };
