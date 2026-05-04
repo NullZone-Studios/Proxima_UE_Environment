@@ -41,47 +41,51 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
-	float Health;
+	float Health = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
-	float MaxHealth;
+	float MaxHealth = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
-	float HealthRegeneration;
+	float HealthRegeneration = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float Damage;
+	float Damage = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float AttackSpeed;
+	float AttackSpeed = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Defense")
-	float Defense;
+	float Defense = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
-	float MovementSpeed;
+	float BaseMovementSpeed = 300.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
+	float TrueMovementSpeed = 300.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
+	float SprintModifier = 1.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float CriticalChance;
+	float CriticalChance = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float CriticalDamage;
+	float CriticalDamage = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float Duration;
+	float Duration = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float Range;
+	float Range = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
-	float Haste;
+	float Haste = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
-	float XP_Gain;
+	float XP_Gain = 1.0F;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
-	float XP;
+	float XP = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
-	float NextLevelXP;
+	float NextLevelXP = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
-	int32 Level;
+	int32 Level = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
-	float LevelUpMultiplier;
+	float LevelUpMultiplier = 1.2f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float BaseAttackCooldown;
+	float BaseAttackCooldown = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float BaseAbility1Cooldown;
+	float BaseAbility1Cooldown = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float BaseAbility2Cooldown;
+	float BaseAbility2Cooldown = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float BaseAbility3Cooldown;
+	float BaseAbility3Cooldown = 1.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAttackCooldown;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
@@ -91,21 +95,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float TrueAbility3Cooldown;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float AttackCooldownTimer;
+	float AttackCooldownTimer = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float Ability1CooldownTimer;
+	float Ability1CooldownTimer = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float Ability2CooldownTimer;
+	float Ability2CooldownTimer = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float Ability3CooldownTimer;
+	float Ability3CooldownTimer = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float InvulnerabilityDuration;
+	float InvulnerabilityDuration = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float InvulnerabilityTimer;
+	float InvulnerabilityTimer = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
-	float HealthRegenDelay;
+	float HealthRegenDelay = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
-	float HealthRegenDelayTimer;
+	float HealthRegenDelayTimer = 0.0f;
 	UPROPERTY(BlueprintAssignable)
 	FOnXPGained OnXPGained;
 
