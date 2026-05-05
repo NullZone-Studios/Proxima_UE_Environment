@@ -29,9 +29,12 @@ void APlayerCharacter::BeginPlay()
 {
 
 	if (PlayerMovementComponentClass) {
-		PlayerMovementComponent = NewObject<UActorComponent>(this, PlayerMovementComponentClass);
-		PlayerMovementComponent->RegisterComponent();
-		AddInstanceComponent(PlayerMovementComponent);
+		PlayerMovementComponent = NewObject<UActorComponent>(this, PlayerMovementComponentClass, TEXT("PlayerMovementComponent"));
+		
+		if (PlayerCameraComponent) {
+			PlayerMovementComponent->RegisterComponent();
+			AddInstanceComponent(PlayerMovementComponent);
+		}
 	}
 
 	Super::BeginPlay();

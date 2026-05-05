@@ -23,19 +23,19 @@ public:
 	APlayerCharacter();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Damage", meta = (AllowPrivateAccess = "true"))
-	UDamageOverTimeComponent* DamageOverTimeComponent;
+	TObjectPtr<UDamageOverTimeComponent> DamageOverTimeComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components|Movement")
 	TSubclassOf<UActorComponent> PlayerMovementComponentClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Movement", meta = (AllowPrivateAccess = "true"))
-	class UActorComponent* PlayerMovementComponent;
+	TObjectPtr<UActorComponent> PlayerMovementComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* PlayerCameraComponent;
+	TObjectPtr<UCameraComponent> PlayerCameraComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* SpringArmComponent;
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -112,13 +112,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Attack")
-	UTexture2D* AttackImage;
+	TObjectPtr<UTexture2D> AttackImage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
-	UTexture2D* Ability1Image;
+	TObjectPtr<UTexture2D> Ability1Image;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
-	UTexture2D* Ability2Image;
+	TObjectPtr<UTexture2D> Ability2Image;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
-	UTexture2D* Ability3Image;
+	TObjectPtr<UTexture2D> Ability3Image;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnXPGained OnXPGained;

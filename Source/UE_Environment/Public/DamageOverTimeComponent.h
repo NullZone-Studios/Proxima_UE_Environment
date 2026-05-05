@@ -25,7 +25,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage Over Time")
-	TArray<UFDamageOverTimeEffect*> ActiveDOTEffects;
+	TArray<FDamageOverTimeEffect> ActiveDOTEffects;
 
 public:	
 	// Called every frame

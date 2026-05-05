@@ -31,9 +31,9 @@ void UDamageOverTimeComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 
 	for (int32 i = ActiveDOTEffects.Num() - 1; i >= 0; --i)
 	{
-		UFDamageOverTimeEffect* Dot = ActiveDOTEffects[i];
+		FDamageOverTimeEffect& Dot = ActiveDOTEffects[i];
 
-		const float Damage = Dot->Tick(DeltaTime);
+		const float Damage = Dot.Tick(DeltaTime);
 
 		if (Damage > 0.f)
 		{
@@ -44,7 +44,7 @@ void UDamageOverTimeComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 			}
 		};
 
-		if (!Dot->IsActive())
+		if (!Dot.IsActive())
 		{
 			ActiveDOTEffects.RemoveAtSwap(i);
 		};
@@ -60,31 +60,31 @@ void UDamageOverTimeComponent::AddDamageOverTime(float TotalDamage, float Durati
 
 	EDOTStackingRules Rule = GetStackingRule(DamageType);
 
-	for (UFDamageOverTimeEffect* Dot : ActiveDOTEffects)
+	for (FDamageOverTimeEffect& Dot : ActiveDOTEffects)
 	{
-		if (Dot->DamageType == DamageType)
+		if (Dot.DamageType == DamageType)
 		{
 			switch (Rule)
 			{
 			case EDOTStackingRules::RefreshExisting:
-				Dot->TimeRemaining = Duration;
+				Dot.TimeRemaining = Duration;
 				return;
 
 			case EDOTStackingRules::ReplaceExisting:
-				Dot->TotalDamage = TotalDamage;
-				Dot->Duration = Duration;
-				Dot->TimeRemaining = Duration;
-				Dot->DamagePerSecond = TotalDamage / Duration;
+				Dot.TotalDamage = TotalDamage;
+				Dot.Duration = Duration;
+				Dot.TimeRemaining = Duration;
+				Dot.DamagePerSecond = TotalDamage / Duration;
 				return;
 
 			case EDOTStackingRules::IgnoreNew:
 				return;
 
 			case EDOTStackingRules::IntensifyAndRefresh:
-				Dot->TotalDamage += TotalDamage;
-				Dot->Duration = FMath::Max(Dot->Duration, Duration);
-				Dot->TimeRemaining = Dot->Duration;
-				Dot->DamagePerSecond = Dot->TotalDamage / Dot->Duration;
+				Dot.TotalDamage += TotalDamage;
+				Dot.Duration = FMath::Max(Dot.Duration, Duration);
+				Dot.TimeRemaining = Dot.Duration;
+				Dot.DamagePerSecond = Dot.TotalDamage / Dot.Duration;
 				return;
 
 			default:
@@ -95,9 +95,9 @@ void UDamageOverTimeComponent::AddDamageOverTime(float TotalDamage, float Durati
 
 	int32 CurrentStacks = 0;
 
-	for (const UFDamageOverTimeEffect* Dot : ActiveDOTEffects)
+	for (const FDamageOverTimeEffect& Dot : ActiveDOTEffects)
 	{
-		if (Dot->DamageType == DamageType)
+		if (Dot.DamageType == DamageType)
 		{
 			CurrentStacks++;
 		};
@@ -108,12 +108,13 @@ void UDamageOverTimeComponent::AddDamageOverTime(float TotalDamage, float Durati
 		return;
 	};
 
-	UFDamageOverTimeEffect* NewDot = NewObject<UFDamageOverTimeEffect>(this);
-	NewDot->TotalDamage = TotalDamage;
-	NewDot->Duration = Duration;
-	NewDot->TimeRemaining = Duration;
-	NewDot->DamagePerSecond = TotalDamage / Duration;
-	NewDot->DamageType = DamageType;
+	FDamageOverTimeEffect NewDot;
+	NewDot.TotalDamage = TotalDamage;
+	NewDot.Duration = Duration;
+	NewDot.TimeRemaining = Duration;
+	NewDot.DamagePerSecond = TotalDamage / Duration;
+	NewDot.DamageType = DamageType;
+
 	ActiveDOTEffects.Add(NewDot);
 }
 

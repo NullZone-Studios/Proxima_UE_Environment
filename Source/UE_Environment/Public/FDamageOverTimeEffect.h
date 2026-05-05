@@ -10,8 +10,8 @@
 /**
  * 
  */
-UCLASS()
-class UE_ENVIRONMENT_API UFDamageOverTimeEffect : public UStruct
+USTRUCT(BlueprintType)
+struct UE_ENVIRONMENT_API FDamageOverTimeEffect
 {
 	GENERATED_BODY()
 	
