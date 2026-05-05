@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include <Engine/Texture2D.h>
 #include "DamageEntity.h"
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
@@ -110,6 +111,15 @@ protected:
 	float HealthRegenDelay = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Attack")
+	UTexture2D* AttackImage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
+	UTexture2D* Ability1Image;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
+	UTexture2D* Ability2Image;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
+	UTexture2D* Ability3Image;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnXPGained OnXPGained;
 

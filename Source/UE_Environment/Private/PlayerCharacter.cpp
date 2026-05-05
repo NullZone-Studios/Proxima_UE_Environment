@@ -14,6 +14,10 @@ APlayerCharacter::APlayerCharacter()
 	SpringArmComponent->TargetArmLength = 1000.0f;
 	SpringArmComponent->SetupAttachment(RootComponent);
 	SpringArmComponent->SetRelativeRotation(FRotator(-50.0f, 0.0f, 0.0f));
+	SpringArmComponent->bInheritPitch = false;
+	SpringArmComponent->bInheritYaw = false;
+	SpringArmComponent->bInheritRoll = false;
+
 
 	PlayerCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCameraComponent->SetupAttachment(SpringArmComponent);
