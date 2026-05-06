@@ -24,6 +24,8 @@ APlayerCharacter::APlayerCharacter()
 	PlayerCameraComponent->SetRelativeRotation(FRotator(-3.5f, -0.0f, 0.0f));
 
 	PlayerUpgradeComponent = CreateDefaultSubobject<UPlayerUpgrade>(TEXT("PlayerUpgradeComponent"));
+
+	Tags.Add(FName("Player"));
 }
 
 // Called when the game starts or when spawned
