@@ -34,6 +34,33 @@ void ABaseEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 }
 
+TArray<float> ABaseEnemy::CreateXPRewardArray(int MaxXPOrbAmount, float XPPerOrb)
+{
+
+	TArray<float> XPArray;
+
+	while (XPReward > 0 && XPArray.Num() < MaxXPOrbAmount) {
+		XPArray.Add(FMath::Min(XPReward, XPPerOrb));
+		XPReward -= XPPerOrb;
+	}
+
+	if (XPReward > 0) {
+		for (int i = 0; i < XPArray.Num(); i++) {
+			if (XPArray[i] < XPPerOrb) {
+				float NeededToFill = XPPerOrb - XPArray[i];
+				float ToAdd = FMath::Min(NeededToFill, XPReward);
+				XPArray[i] += ToAdd;
+				XPReward -= ToAdd;
+				if (XPReward <= 0) {
+					break;
+				}
+			}
+		}
+	}
+
+	return XPArray;
+}
+
 bool ABaseEnemy::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
 	if (!invulnerable || CircumventInvulnerability) {
@@ -107,4 +134,9 @@ void ABaseEnemy::RegenerateHealth(float DeltaTime) {
 			this->Health = this->MaxHealth;
 		}
 	}
+}
+
+void ABaseEnemy::TakingDamage(float DamageAmount, bool bCircumventInvulnerability)
+{
+	OnTakingDamage.Broadcast(DamageAmount, bCircumventInvulnerability);
 }

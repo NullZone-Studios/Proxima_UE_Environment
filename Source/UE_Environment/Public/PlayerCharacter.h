@@ -9,6 +9,7 @@
 #include "Engine/Texture2D.h"
 #include "PlayerUpgrade.h"
 #include "DamageEntity.h"
+#include "DelegatesForGame.h"
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
 
@@ -148,6 +149,8 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnXPGained OnXPGained;
+	UPROPERTY(BlueprintAssignable)
+	FOnTakingDamage OnTakingDamage;
 
 public:
 	// Called every frame
@@ -213,4 +216,6 @@ public:
 	float GetDefenseCalculation() const override;
 	UFUNCTION(BlueprintCallable, Category = "XP")
 	void GainXP(float Amount);
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void TakingDamage(float DamageAmount, bool bCircumventInvulnerability);
 };

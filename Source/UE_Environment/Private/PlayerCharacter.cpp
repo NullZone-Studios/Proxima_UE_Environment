@@ -196,3 +196,8 @@ void APlayerCharacter::GainXP(float Amount)
 	XP += Amount * TrueXPGain;
 	OnXPGained.Broadcast(Amount * TrueXPGain);
 }
+
+void APlayerCharacter::TakingDamage(float DamageAmount, bool bCircumventInvulnerability)
+{
+	OnTakingDamage.Broadcast(DamageAmount, bCircumventInvulnerability);
+}

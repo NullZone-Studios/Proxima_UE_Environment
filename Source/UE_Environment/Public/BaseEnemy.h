@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "DamageEntity.h"
+#include "DelegatesForGame.h"
 #include <DamageOverTimeComponent.h>
 #include "BaseEnemy.generated.h"
 
@@ -48,6 +49,8 @@ protected:
 	float HealthRegenDelay;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy Stats|Base Stats|Combat")
 	float HealthRegenDelayTimer;
+	UPROPERTY(BlueprintAssignable, Category = "Damage")
+	FOnTakingDamage OnTakingDamage;
 
 
 public:	
@@ -57,6 +60,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Enemy Stats")
+	TArray<float> CreateXPRewardArray(int MaxXPOrbAmount = 6, float XPPerOrb = 25.0f);
 
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
@@ -82,4 +87,7 @@ public:
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsInvulnerable() const override;
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void TakingDamage(float DamageAmount, bool bCircumventInvulnerability);
 };
