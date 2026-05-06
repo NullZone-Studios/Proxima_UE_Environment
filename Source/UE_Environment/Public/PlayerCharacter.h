@@ -6,7 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include <Engine/Texture2D.h>
+#include "Engine/Texture2D.h"
+#include "PlayerUpgrade.h"
 #include "DamageEntity.h"
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
@@ -37,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Progression", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPlayerUpgrade> PlayerUpgradeComponent;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,14 +49,24 @@ protected:
 	float Health = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
 	float MaxHealth = 100.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
+	float TrueMaxHealth = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
 	float HealthRegeneration = 1.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
+	float TrueHealthRegeneration = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Damage = 10.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueDamage = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float AttackSpeed = 1.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueAttackSpeed = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Defense")
 	float Defense = 20;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Defense")
+	float TrueDefense = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
 	float BaseMovementSpeed = 300.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
@@ -61,16 +75,28 @@ protected:
 	float SprintModifier = 1.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float CriticalChance = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueCriticalChance = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float CriticalDamage = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueCriticalDamage = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Duration = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueDuration = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Range = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueRange = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Haste = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	float TrueHaste = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
 	float XP_Gain = 1.0F;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	float TrueXPGain = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
 	float XP = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")

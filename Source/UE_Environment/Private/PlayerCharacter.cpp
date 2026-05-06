@@ -10,6 +10,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DamageOverTimeComponent = CreateDefaultSubobject<UDamageOverTimeComponent>(TEXT("DamageOverTimeComponent"));
+
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComponent->TargetArmLength = 1000.0f;
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -18,16 +19,16 @@ APlayerCharacter::APlayerCharacter()
 	SpringArmComponent->bInheritYaw = false;
 	SpringArmComponent->bInheritRoll = false;
 
-
 	PlayerCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 	PlayerCameraComponent->SetupAttachment(SpringArmComponent);
 	PlayerCameraComponent->SetRelativeRotation(FRotator(-3.5f, -0.0f, 0.0f));
+
+	PlayerUpgradeComponent = CreateDefaultSubobject<UPlayerUpgrade>(TEXT("PlayerUpgradeComponent"));
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
-
 	if (PlayerMovementComponentClass) {
 		PlayerMovementComponent = NewObject<UActorComponent>(this, PlayerMovementComponentClass, TEXT("PlayerMovementComponent"));
 		
@@ -55,10 +56,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 void APlayerCharacter::UpdateCooldownStats() {
-	TrueAttackCooldown = BaseAttackCooldown / (1 + AttackSpeed / 100);
-	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + Haste / 100);
-	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + Haste / 100);
-	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + Haste / 100);
+	TrueAttackCooldown = BaseAttackCooldown / (1 + TrueAttackSpeed / 100);
+	TrueAbility1Cooldown = BaseAbility1Cooldown / (1 + TrueHaste / 100);
+	TrueAbility2Cooldown = BaseAbility2Cooldown / (1 + TrueHaste / 100);
+	TrueAbility3Cooldown = BaseAbility3Cooldown / (1 + TrueHaste / 100);
 }
 
 void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
@@ -77,7 +78,7 @@ void APlayerCharacter::UpdateCooldowns(float DeltaTime) {
 }
 
 void APlayerCharacter::RegenerateHealth(float DeltaTime) {
-	if (this->HealthRegeneration <= 0 || this->HealthRegenDelay <= 0) {
+	if (this->TrueHealthRegeneration <= 0 || this->HealthRegenDelay <= 0) {
 		return;
 	}
 
@@ -87,9 +88,9 @@ void APlayerCharacter::RegenerateHealth(float DeltaTime) {
 	}
 	
 	if (this->Health < this->MaxHealth) {
-		this->Health += this->HealthRegeneration * DeltaTime;
-		if (this->Health > this->MaxHealth) {
-			this->Health = this->MaxHealth;
+		this->Health += this->TrueHealthRegeneration * DeltaTime;
+		if (this->Health > this->TrueMaxHealth) {
+			this->Health = this->TrueMaxHealth;
 		}
 	}
 }
@@ -152,7 +153,7 @@ bool APlayerCharacter::TakeDamage(float DamageAmount, bool invulnerable, bool Ci
 		if (CircumventInvulnerability) {
 			return false;
 		}
-		if (HealthRegeneration > 0 && HealthRegenDelay > 0) {
+		if (TrueHealthRegeneration > 0 && HealthRegenDelay > 0) {
 			HealthRegenDelayTimer = HealthRegenDelay;
 		}
 		return true;
@@ -170,7 +171,7 @@ bool APlayerCharacter::IsAlive() const
 
 float APlayerCharacter::GetDefenseCalculation() const
 {
-	return ( Defense / 100.0f ) + 1;
+	return ( TrueDefense / 100.0f ) + 1;
 }
 
 bool APlayerCharacter::IsInvulnerable() const
@@ -192,6 +193,6 @@ void APlayerCharacter::ResetTempInvulnerability(float TempInvulnerabilityDuratio
 
 void APlayerCharacter::GainXP(float Amount)
 {
-	XP += Amount;
-	OnXPGained.Broadcast(Amount);
+	XP += Amount * TrueXPGain;
+	OnXPGained.Broadcast(Amount * TrueXPGain);
 }
