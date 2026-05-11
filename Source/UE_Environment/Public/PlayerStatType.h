@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/Class.h"
 #include "PlayerStatType.generated.h"
 
 UENUM(BlueprintType)
@@ -18,5 +17,8 @@ enum class EPlayerStatType : uint8
 	Range UMETA(DisplayName = "Range"),
 	Duration UMETA(DisplayName = "Duration"),
 	CriticalChance UMETA(DisplayName = "Critical Chance"),
-	CriticalDamage UMETA(DisplayName = "Critical Damage")
+	CriticalDamage UMETA(DisplayName = "Critical Damage"),
+	MAX UMETA(Hidden)
 };
+
+ENUM_RANGE_BY_COUNT(EPlayerStatType, EPlayerStatType::MAX)

@@ -42,10 +42,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Progression", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerUpgrade> PlayerUpgradeComponent;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|General")
 	FString PlayerName = "Player";
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")
@@ -140,6 +136,10 @@ protected:
 	float HealthRegenDelay = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer = 0.0f;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Attack")
 	TObjectPtr<UTexture2D> AttackImage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Images|Abilities")
