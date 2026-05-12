@@ -42,6 +42,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components|Progression", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerUpgrade> PlayerUpgradeComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "HUD", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UUserWidget> PlayerHUD;
+
+	UPROPERTY(EditDefaultsOnly, Category = "HUD")
+	TSubclassOf<UUserWidget> PlayerHUDClass;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|General")
 	FString PlayerName = "Player";
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Health")

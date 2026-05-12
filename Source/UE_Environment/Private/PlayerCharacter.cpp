@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -37,6 +38,13 @@ void APlayerCharacter::BeginPlay()
 		if (PlayerCameraComponent) {
 			PlayerMovementComponent->RegisterComponent();
 			AddInstanceComponent(PlayerMovementComponent);
+		}
+	}
+
+	if (PlayerHUDClass && IsLocallyControlled()) {
+		PlayerHUD = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDClass);
+		if (PlayerHUD) {
+			PlayerHUD->AddToViewport();
 		}
 	}
 
