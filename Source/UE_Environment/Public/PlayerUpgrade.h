@@ -51,7 +51,7 @@ public:
 	virtual void ApplyUpgrade();
 
 	UFUNCTION(BlueprintCallable, Category = "Player Upgrade")
-	virtual void NextUpgrade(int64 Level);
+	virtual TArray<FMinorCardUpgrade> NextUpgrade(int64 Level);
 
 	UFUNCTION(BlueprintPure, Category = "Player Upgrade")
 	EUpgradeChoiceType GetUpgradeTypeForLevel(int32 Level) const;

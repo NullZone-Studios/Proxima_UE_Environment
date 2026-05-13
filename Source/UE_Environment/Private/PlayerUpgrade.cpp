@@ -114,29 +114,15 @@ void UPlayerUpgrade::ApplyUpgrade() {
 		PlayerCharacter->TrueCriticalDamage = PlayerCharacter->CriticalDamage + StatUpgrades[EPlayerStatType::CriticalDamage];
 }
 
-void UPlayerUpgrade::NextUpgrade(int64 Level) {
+TArray<FMinorCardUpgrade> UPlayerUpgrade::NextUpgrade(int64 Level) {
 	// Implementation for moving to the next upgrade
-
-	const EUpgradeChoiceType UpgradeType = GetUpgradeTypeForLevel(Level);
-
-	if (UpgradeType == EUpgradeChoiceType::Minor)
-	{
-		TArray<FMinorCardUpgrade> Choices = GenerateMinorCardChoices(3);
-
-		// Send Choices til UI som Minor Cards
-	}
-	else
-	{
-		// Senere:
-		// TArray<FMajorCardUpgrade> Choices = GenerateMajorCardChoices(3);
-
-		// Send Choices til UI som Major Cards
-	}
+	
+	TArray<FMinorCardUpgrade> Choices = GenerateMinorCardChoices(3);
 
 	this->DamageUpgrade += (Level >= 20) ? 2.0f : 1.0f;
 	this->DefenseUpgrade += (Level >= 20) ? 3.0f : 2.0f;
-
-	ApplyUpgrade();
+	
+	return Choices;
 }
 
 EUpgradeChoiceType UPlayerUpgrade::GetUpgradeTypeForLevel(int32 Level) const
