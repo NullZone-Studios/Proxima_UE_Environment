@@ -32,4 +32,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
 	float UpgradeAmount = 0.0f;
+
+	FPrimaryAssetId GetPrimaryAssetId() const;
 };

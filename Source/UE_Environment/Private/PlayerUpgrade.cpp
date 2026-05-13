@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "PlayerUpgrade.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
-#include "PlayerUpgrade.h"
 #include "PlayerCharacter.h"
 
 // Sets default values for this component's properties

@@ -3,3 +3,7 @@
 
 #include "MinorCardDefinition.h"
 
+FPrimaryAssetId UMinorCardDefinition::GetPrimaryAssetId() const
+{
+    return FPrimaryAssetId("MinorCardDefinition", GetFName());
+}
