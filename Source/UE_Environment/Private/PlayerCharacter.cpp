@@ -2,6 +2,8 @@
 
 
 #include "PlayerCharacter.h"
+#include "Blueprint/UserWidget.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -31,6 +33,7 @@ APlayerCharacter::APlayerCharacter()
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
+
 	if (PlayerMovementComponentClass) {
 		PlayerMovementComponent = NewObject<UActorComponent>(this, PlayerMovementComponentClass, TEXT("PlayerMovementComponent"));
 		
