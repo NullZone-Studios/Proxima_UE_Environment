@@ -8,6 +8,7 @@
 #include "MinorCardDefinition.h"
 #include "UpgradeChoiceType.h"
 #include "PlayerStatType.h"
+#include "FCardChoices.h"
 #include "PlayerUpgrade.generated.h"
 
 
@@ -57,7 +58,7 @@ public:
 	virtual void ApplyUpgrade();
 
 	UFUNCTION(BlueprintCallable, Category = "Player Upgrade")
-	virtual TArray<FMinorCardUpgrade> NextUpgrade(int64 Level);
+	virtual FCardChoices NextUpgrade(int64 Level);
 
 	UFUNCTION(BlueprintPure, Category = "Player Upgrade")
 	EUpgradeChoiceType GetUpgradeTypeForLevel(int32 Level) const;

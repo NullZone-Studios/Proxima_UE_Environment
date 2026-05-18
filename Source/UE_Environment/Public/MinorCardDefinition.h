@@ -33,5 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
 	float UpgradeAmount = 0.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Selection", meta = (ClampMin = "0.0"))
+	float Weight = 1.0f;
+
 	FPrimaryAssetId GetPrimaryAssetId() const;
 };

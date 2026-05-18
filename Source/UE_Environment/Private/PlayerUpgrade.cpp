@@ -37,25 +37,52 @@ void UPlayerUpgrade::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 TArray<FMinorCardUpgrade> UPlayerUpgrade::GenerateMinorCardChoices(int32 Amount)
 {
 	TArray<FMinorCardUpgrade> GeneratedCards;
-
 	TArray<UMinorCardDefinition*> AvailableCards;
 
 	for (UMinorCardDefinition* CardDefinition : MinorCardPool)
 	{
-		if (CardDefinition)
+		if (CardDefinition && CardDefinition->Weight > 0.0f)
 		{
 			AvailableCards.Add(CardDefinition);
 		}
 	}
 
-	const int32 CardsToGenerate = FMath::Min(Amount, AvailableCards.Num());
-
-	for (int32 i = 0; i < CardsToGenerate; i++)
+	for (int32 i = 0; i < Amount && AvailableCards.Num() > 0; i++)
 	{
-		const int32 RandomIndex = FMath::RandRange(0, AvailableCards.Num() - 1);
+		float TotalWeight = 0.0f;
 
-		UMinorCardDefinition* SelectedDefinition = AvailableCards[RandomIndex];
-		AvailableCards.RemoveAt(RandomIndex);
+		for (UMinorCardDefinition* CardDefinition : AvailableCards)
+		{
+			TotalWeight += CardDefinition->Weight;
+		}
+
+		if (TotalWeight <= 0.0f)
+		{
+			break;
+		}
+
+		const float RandomValue = FMath::FRandRange(0.0f, TotalWeight);
+		float CurrentWeight = 0.0f;
+
+		int32 SelectedIndex = INDEX_NONE;
+
+		for (int32 CardIndex = 0; CardIndex < AvailableCards.Num(); CardIndex++)
+		{
+			CurrentWeight += AvailableCards[CardIndex]->Weight;
+
+			if (RandomValue <= CurrentWeight)
+			{
+				SelectedIndex = CardIndex;
+				break;
+			}
+		}
+
+		if (SelectedIndex == INDEX_NONE)
+		{
+			break;
+		}
+
+		UMinorCardDefinition* SelectedDefinition = AvailableCards[SelectedIndex];
 
 		FMinorCardUpgrade NewCard;
 		NewCard.CardName = SelectedDefinition->CardName;
@@ -65,6 +92,9 @@ TArray<FMinorCardUpgrade> UPlayerUpgrade::GenerateMinorCardChoices(int32 Amount)
 		NewCard.UpgradeAmount = SelectedDefinition->UpgradeAmount;
 
 		GeneratedCards.Add(NewCard);
+
+		// Sikrer at samme kort ikke kan komme flere gange i samme selection.
+		AvailableCards.RemoveAt(SelectedIndex);
 	}
 
 	return GeneratedCards;
@@ -114,21 +144,34 @@ void UPlayerUpgrade::ApplyUpgrade() {
 		PlayerCharacter->TrueCriticalDamage = PlayerCharacter->CriticalDamage + StatUpgrades[EPlayerStatType::CriticalDamage];
 }
 
-TArray<FMinorCardUpgrade> UPlayerUpgrade::NextUpgrade(int64 Level) {
+FCardChoices UPlayerUpgrade::NextUpgrade(int64 Level) {
 	// Implementation for moving to the next upgrade
 	
 	if (!bMinorCardsLoaded || MinorCardPool.Num() == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Tried to generate upgrade before cards were loaded"));
-		return TArray<FMinorCardUpgrade>();
+		return FCardChoices();
 	}
 
-	TArray<FMinorCardUpgrade> Choices = GenerateMinorCardChoices(3);
+	FCardChoices CardChoices;
+	CardChoices.UpgradeType = GetUpgradeTypeForLevel(Level);
+
+	switch (CardChoices.UpgradeType)
+	{
+	case EUpgradeChoiceType::Minor:
+		CardChoices.MinorCardChoices = GenerateMinorCardChoices(3);
+		break;
+	case EUpgradeChoiceType::Major:
+		//Generate Major Card Choices when that is added
+		break;
+	default:
+		break;
+	}
 
 	this->DamageUpgrade += (Level >= 20) ? 2.0f : 1.0f;
 	this->DefenseUpgrade += (Level >= 20) ? 3.0f : 2.0f;
-	
-	return Choices;
+
+	return CardChoices;
 }
 
 EUpgradeChoiceType UPlayerUpgrade::GetUpgradeTypeForLevel(int32 Level) const

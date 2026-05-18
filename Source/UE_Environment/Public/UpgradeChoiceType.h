@@ -7,5 +7,7 @@ UENUM(BlueprintType)
 enum class EUpgradeChoiceType : uint8
 {
 	Minor,
-	Major
+	Major,
+	Augment,
+	Weapon
 };
