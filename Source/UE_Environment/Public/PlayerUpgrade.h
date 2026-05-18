@@ -37,6 +37,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats")
 	float DefenseUpgrade = 0.0f;
 
+private:
+
+	bool bMinorCardsLoaded = false;
+
+	void OnMinorCardDefinitionsLoaded();
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -55,4 +61,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Player Upgrade")
 	EUpgradeChoiceType GetUpgradeTypeForLevel(int32 Level) const;
+
+	UFUNCTION(BlueprintPure, Category = "Player Upgrade")
+	bool AreMinorCardsLoaded() const { return bMinorCardsLoaded; }
 };

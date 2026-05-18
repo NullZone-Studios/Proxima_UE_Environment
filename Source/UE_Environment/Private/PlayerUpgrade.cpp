@@ -117,6 +117,12 @@ void UPlayerUpgrade::ApplyUpgrade() {
 TArray<FMinorCardUpgrade> UPlayerUpgrade::NextUpgrade(int64 Level) {
 	// Implementation for moving to the next upgrade
 	
+	if (!bMinorCardsLoaded || MinorCardPool.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tried to generate upgrade before cards were loaded"));
+		return TArray<FMinorCardUpgrade>();
+	}
+
 	TArray<FMinorCardUpgrade> Choices = GenerateMinorCardChoices(3);
 
 	this->DamageUpgrade += (Level >= 20) ? 2.0f : 1.0f;
@@ -134,6 +140,35 @@ EUpgradeChoiceType UPlayerUpgrade::GetUpgradeTypeForLevel(int32 Level) const
 
 void UPlayerUpgrade::LoadMinorCardDefinitions()
 {
+	bMinorCardsLoaded = false;
+
+	MinorCardPool.Empty();
+
+	UAssetManager& AssetManager = UAssetManager::Get();
+
+	TArray<FPrimaryAssetId> AssetIds;
+	AssetManager.GetPrimaryAssetIdList(
+		FPrimaryAssetType(TEXT("MinorCardDefinition")),
+		AssetIds
+	);
+
+	UE_LOG(LogTemp, Warning, TEXT("Found %d MinorCardDefinition assets"), AssetIds.Num());
+
+	if (AssetIds.Num() == 0)
+	{
+		return;
+	}
+
+	AssetManager.LoadPrimaryAssets(
+		AssetIds,
+		TArray<FName>(),
+		FStreamableDelegate::CreateUObject(this, &UPlayerUpgrade::OnMinorCardDefinitionsLoaded)
+	);
+
+}
+
+void UPlayerUpgrade::OnMinorCardDefinitionsLoaded()
+{
 	MinorCardPool.Empty();
 
 	UAssetManager& AssetManager = UAssetManager::Get();
@@ -147,18 +182,16 @@ void UPlayerUpgrade::LoadMinorCardDefinitions()
 	for (const FPrimaryAssetId& AssetId : AssetIds)
 	{
 		UObject* LoadedObject = AssetManager.GetPrimaryAssetObject(AssetId);
-
-		if (!LoadedObject)
-		{
-			LoadedObject = AssetManager.GetStreamableManager()
-				.LoadSynchronous(AssetManager.GetPrimaryAssetPath(AssetId));
-		}
-
 		UMinorCardDefinition* CardDefinition = Cast<UMinorCardDefinition>(LoadedObject);
 
 		if (CardDefinition)
 		{
 			MinorCardPool.Add(CardDefinition);
+			UE_LOG(LogTemp, Warning, TEXT("Loaded card: %s"), *CardDefinition->CardName.ToString());
 		}
 	}
+
+	bMinorCardsLoaded = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("Loaded %d Minor Card Definitions"), MinorCardPool.Num());
 }
