@@ -9,6 +9,7 @@
 #include "Engine/Texture2D.h"
 #include "PlayerUpgrade.h"
 #include "DamageEntity.h"
+#include "DamageInfo.h"
 #include "DelegatesForGame.h"
 #include "DamageOverTimeComponent.h"
 #include "PlayerCharacter.generated.h"
@@ -72,13 +73,13 @@ public:
 	float TrueMovementSpeed = 300.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Movement")
 	float SprintModifier = 1.5f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat", meta = (ClampMin = 0.0, ClampMax = 100.0))
 	float CriticalChance = 0.0f;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat", meta = (ClampMin = 0.0, ClampMax = 100.0))
 	float TrueCriticalChance = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float CriticalDamage = 0.0f;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat", meta = (ClampMin = 0.0))
 	float TrueCriticalDamage = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float Duration = 0.0f;
@@ -92,17 +93,17 @@ public:
 	float Haste = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Base Stats|Combat")
 	float TrueHaste = 0.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 0.0))
 	float XP_Gain = 1.0F;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 0.0))
 	float TrueXPGain = 1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 0.0))
 	float XP = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 0.0))
 	float NextLevelXP = 100.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 1.0))
 	int32 Level = 1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Progression", meta = (ClampMin = 1.0))
 	float LevelUpMultiplier = 1.2f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats|Cooldowns")
 	float BaseAttackCooldown = 1.0f;
@@ -136,6 +137,7 @@ public:
 	float HealthRegenDelay = 0.0f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Player Stats|Cooldowns")
 	float HealthRegenDelayTimer = 0.0f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -151,6 +153,7 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnXPGained OnXPGained;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnTakingDamage OnTakingDamage;
 
@@ -209,6 +212,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
 	virtual float GetNormalizedAttackSpeed() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	virtual FDamageInfo DealDamage() const;
+
+
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
@@ -219,5 +226,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "XP")
 	void GainXP(float Amount);
 	UFUNCTION(BlueprintCallable, Category = "Damage")
-	void TakingDamage(float DamageAmount, bool bCircumventInvulnerability);
+	void TakingDamage(FDamageInfo DamageInfo);
 };

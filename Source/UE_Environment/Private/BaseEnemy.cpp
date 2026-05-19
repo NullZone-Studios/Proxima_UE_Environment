@@ -136,7 +136,30 @@ void ABaseEnemy::RegenerateHealth(float DeltaTime) {
 	}
 }
 
-void ABaseEnemy::TakingDamage(float DamageAmount, bool bCircumventInvulnerability)
+void ABaseEnemy::TakingDamage(FDamageInfo DamageInfo)
 {
-	OnTakingDamage.Broadcast(DamageAmount, bCircumventInvulnerability);
+	OnTakingDamage.Broadcast(DamageInfo);
+}
+
+FDamageInfo ABaseEnemy::DealDamage() const
+{
+	float FinalDamage = this->AttackDamage;
+
+	if (CriticalChance > 0) {
+		float RandomValue = FMath::FRandRange(0.0f, 100.0f);
+		if (RandomValue < CriticalChance) {
+			FinalDamage *= (1 + CriticalDamage / 100.0f);
+		}
+	}
+
+	if (FinalDamage < 0) {
+		FinalDamage = 0;
+	}
+
+	FDamageInfo DamageInfo;
+	DamageInfo.DamageAmount = FinalDamage;
+	DamageInfo.IsCriticalHit = false;
+	DamageInfo.CircumventInvulnerability = false;
+
+	return DamageInfo;
 }

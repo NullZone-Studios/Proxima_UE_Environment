@@ -65,4 +65,6 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Player Upgrade")
 	bool AreMinorCardsLoaded() const { return bMinorCardsLoaded; }
+
+	EUpgradeChoiceType ResolveUpgradeTypeForRuntime(EUpgradeChoiceType Type) const;
 };

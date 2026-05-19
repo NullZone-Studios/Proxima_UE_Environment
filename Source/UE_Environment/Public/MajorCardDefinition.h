@@ -5,14 +5,13 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "Engine/Texture2D.h"
-#include "PlayerStatType.h"
-#include "EUpgradeMathType.h"
+#include "StatUpgrade.h"
 #include "MajorCardDefinition.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class UE_ENVIRONMENT_API UMajorCardDefinition : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
@@ -29,15 +28,9 @@ public:
 	TObjectPtr<UTexture2D> ShowcaseImage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
-	EPlayerStatType StatType;
+	TArray<FStatUpgrade> StatUpgrades;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
-	EUpgradeMathType UpgradeMathType;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
-	float UpgradeAmount = 0.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Selection", meta = (ClampMin = "0.0"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Selection", meta = (ClampMin = "0.0", ClampMax = "100.0"))
 	float Weight = 1.0f;
 
 	FPrimaryAssetId GetPrimaryAssetId() const;

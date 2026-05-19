@@ -40,6 +40,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
 	float AttackSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
+	float CriticalChance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
+	float CriticalDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Stats|Base Stats|Combat")
 	float InvulnerabilityDuration;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy Stats|Base Stats|Combat")
 	float InvulnerabilityTimer;
@@ -89,5 +93,8 @@ public:
 	bool IsInvulnerable() const override;
 
 	UFUNCTION(BlueprintCallable, Category = "Damage")
-	void TakingDamage(float DamageAmount, bool bCircumventInvulnerability);
+	void TakingDamage(FDamageInfo DamageInfo);
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	virtual FDamageInfo DealDamage() const;
 };

@@ -30,10 +30,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
 	EPlayerStatType StatType;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Upgrade", meta = (ClampMin = "0.0"))
 	float UpgradeAmount = 0.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Selection", meta = (ClampMin = "0.0"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Minor Card|Selection", meta = (ClampMin = "0.0", ClampMax = "100.0"))
 	float Weight = 1.0f;
 
 	FPrimaryAssetId GetPrimaryAssetId() const;

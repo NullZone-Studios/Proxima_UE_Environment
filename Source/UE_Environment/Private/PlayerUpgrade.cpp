@@ -153,8 +153,8 @@ FCardChoices UPlayerUpgrade::NextUpgrade(int64 Level) {
 		return FCardChoices();
 	}
 
-	FCardChoices CardChoices;
-	CardChoices.UpgradeType = GetUpgradeTypeForLevel(Level);
+	FCardChoices CardChoices; //Remove ResolveUpgradeTypeForRuntime when the special types are implemented, and replace with GetUpgradeTypeForLevel directly
+	CardChoices.UpgradeType = ResolveUpgradeTypeForRuntime(GetUpgradeTypeForLevel(Level));
 
 	switch (CardChoices.UpgradeType)
 	{
@@ -176,9 +176,53 @@ FCardChoices UPlayerUpgrade::NextUpgrade(int64 Level) {
 
 EUpgradeChoiceType UPlayerUpgrade::GetUpgradeTypeForLevel(int32 Level) const
 {
+	if (Level <= 0)
+	{
+		return EUpgradeChoiceType::Minor;
+	}
+
+	// Special unlockable milestone
+	if (Level == 10)
+	{
+		return EUpgradeChoiceType::SkillpointAndAugment;
+	}
+
+	// Fixed milestone
+	if (Level == 20)
+	{
+		return EUpgradeChoiceType::Augment;
+	}
+
+	// Before level 20: every 3rd level is Major, otherwise Skillpoint
+	if (Level < 20)
+	{
+		return Level % 3 == 0
+			? EUpgradeChoiceType::Major
+			: EUpgradeChoiceType::Skillpoint;
+	}
+
+	// Level 21+: Major, Minor, Minor repeat
 	return Level % 3 == 0
 		? EUpgradeChoiceType::Major
 		: EUpgradeChoiceType::Minor;
+}
+
+EUpgradeChoiceType UPlayerUpgrade::ResolveUpgradeTypeForRuntime(EUpgradeChoiceType Type) const
+{
+	switch (Type)
+	{
+	case EUpgradeChoiceType::Skillpoint:
+		return EUpgradeChoiceType::Minor;
+
+	case EUpgradeChoiceType::Augment:
+		return EUpgradeChoiceType::Major; // Temporary fallback
+
+	case EUpgradeChoiceType::SkillpointAndAugment:
+		return EUpgradeChoiceType::Minor; // Until both systems exist
+
+	default:
+		return Type;
+	}
 }
 
 void UPlayerUpgrade::LoadMinorCardDefinitions()

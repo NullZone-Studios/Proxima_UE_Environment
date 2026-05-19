@@ -9,5 +9,7 @@ enum class EUpgradeChoiceType : uint8
 	Minor,
 	Major,
 	Augment,
-	Weapon
+	Weapon,
+	Skillpoint,
+	SkillpointAndAugment
 };

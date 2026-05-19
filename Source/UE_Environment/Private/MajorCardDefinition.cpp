@@ -3,3 +3,7 @@
 
 #include "MajorCardDefinition.h"
 
+FPrimaryAssetId UMajorCardDefinition::GetPrimaryAssetId() const
+{
+    return FPrimaryAssetId("MajorCardDefinition", GetFName());
+}

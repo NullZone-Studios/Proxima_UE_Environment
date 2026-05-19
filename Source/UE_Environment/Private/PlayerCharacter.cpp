@@ -202,7 +202,30 @@ void APlayerCharacter::GainXP(float Amount)
 	OnXPGained.Broadcast(Amount * TrueXPGain);
 }
 
-void APlayerCharacter::TakingDamage(float DamageAmount, bool bCircumventInvulnerability)
+void APlayerCharacter::TakingDamage(FDamageInfo DamageInfo)
 {
-	OnTakingDamage.Broadcast(DamageAmount, bCircumventInvulnerability);
+	OnTakingDamage.Broadcast(DamageInfo);
+}
+
+FDamageInfo APlayerCharacter::DealDamage() const
+{
+	float FinalDamage = this->TrueDamage;
+
+	if (CriticalChance > 0) {
+		float RandomValue = FMath::FRandRange(0.0f, 100.0f);
+		if (RandomValue < CriticalChance) {
+			FinalDamage *= (1 + CriticalDamage / 100.0f);
+		}
+	}
+
+	if (FinalDamage < 0) {
+		FinalDamage = 0;
+	}
+
+	FDamageInfo DamageInfo;
+	DamageInfo.DamageAmount = FinalDamage;
+	DamageInfo.IsCriticalHit = false;
+	DamageInfo.CircumventInvulnerability = false;
+
+	return DamageInfo;
 }
