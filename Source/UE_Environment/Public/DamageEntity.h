@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageResult.h"
 #include "UObject/Interface.h"
 #include "DamageEntity.generated.h"
 
@@ -22,7 +23,7 @@ class UE_ENVIRONMENT_API IDamageEntity
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) = 0;
+	virtual FDamageResult TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) = 0;
 	virtual bool IsAlive() const = 0;
 	virtual float GetDefenseCalculation() const = 0;
 	virtual void ResetInvulnerability() = 0;

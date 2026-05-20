@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "DamageEntity.h"
+#include "DamageResult.h"
 #include "DelegatesForGame.h"
 #include <DamageOverTimeComponent.h>
 #include "BaseEnemy.generated.h"
@@ -69,7 +70,7 @@ public:
 
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
-	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
+	FDamageResult TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsAlive() const override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")

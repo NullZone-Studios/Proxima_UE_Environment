@@ -102,6 +102,12 @@ TArray<FMinorCardUpgrade> UPlayerUpgrade::GenerateMinorCardChoices(int32 Amount)
 
 void UPlayerUpgrade::PickMinorCard(const FMinorCardUpgrade& ChosenCard)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Picked card: %s | Stat: %d | Amount: %f | Owner: %s"),
+		*ChosenCard.CardName.ToString(),
+		(int32)ChosenCard.StatType,
+		ChosenCard.UpgradeAmount,
+		*GetNameSafe(GetOwner()));
+
 	MinorCards.Add(ChosenCard);
 	ApplyUpgrade();
 }
@@ -142,6 +148,8 @@ void UPlayerUpgrade::ApplyUpgrade() {
 		PlayerCharacter->TrueDuration = PlayerCharacter->Duration + StatUpgrades[EPlayerStatType::Duration];
 		PlayerCharacter->TrueCriticalChance = PlayerCharacter->CriticalChance + StatUpgrades[EPlayerStatType::CriticalChance];
 		PlayerCharacter->TrueCriticalDamage = PlayerCharacter->CriticalDamage + StatUpgrades[EPlayerStatType::CriticalDamage];
+
+		PlayerCharacter->UpdateCooldownStats();
 }
 
 FCardChoices UPlayerUpgrade::NextUpgrade(int64 Level) {

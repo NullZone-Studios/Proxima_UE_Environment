@@ -218,7 +218,7 @@ public:
 
 	// Inherited via IDamageEntity
 	UFUNCTION(BlueprintCallable, Category = "Damage")
-	bool TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
+	FDamageResult TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability) override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	bool IsAlive() const override;
 	UFUNCTION(BlueprintCallable, Category = "Damage")

@@ -61,23 +61,30 @@ TArray<float> ABaseEnemy::CreateXPRewardArray(int MaxXPOrbAmount, float XPPerOrb
 	return XPArray;
 }
 
-bool ABaseEnemy::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
+FDamageResult ABaseEnemy::TakeDamage(float DamageAmount, bool invulnerable, bool CircumventInvulnerability)
 {
+	FDamageResult Result;
+	Result.DidDamage = false;
+	Result.FinalDamageAmount = 0;
+
 	if (!invulnerable || CircumventInvulnerability) {
-		Health -= DamageAmount / GetDefenseCalculation();
+		Result.FinalDamageAmount = DamageAmount / GetDefenseCalculation();
+		Health -= Result.FinalDamageAmount;
 		if (Health < 0) {
 			Health = 0;
 		}
 		if (CircumventInvulnerability) {
-			return false;
+			return Result;
 		}
 		if (HealthRegen > 0 && HealthRegenDelay > 0) {
 			HealthRegenDelayTimer = HealthRegenDelay;
 		}
-		return true;
+		Result.DidDamage = true;
+		
+		return Result;
 	}
 	else {
-		return false;
+		return Result;
 	}
 }
 
@@ -145,21 +152,24 @@ FDamageInfo ABaseEnemy::DealDamage() const
 {
 	float FinalDamage = this->AttackDamage;
 
+	FDamageInfo DamageInfo;
+	DamageInfo.IsCriticalHit = false;
+
 	if (CriticalChance > 0) {
 		float RandomValue = FMath::FRandRange(0.0f, 100.0f);
 		if (RandomValue < CriticalChance) {
 			FinalDamage *= (1 + CriticalDamage / 100.0f);
+			DamageInfo.IsCriticalHit = true;
 		}
 	}
 
-	if (FinalDamage < 0) {
-		FinalDamage = 0;
-	}
 
-	FDamageInfo DamageInfo;
-	DamageInfo.DamageAmount = FinalDamage;
-	DamageInfo.IsCriticalHit = false;
-	DamageInfo.CircumventInvulnerability = false;
+		if (FinalDamage < 0) {
+			FinalDamage = 0;
+		}
 
-	return DamageInfo;
+		DamageInfo.DamageAmount = FinalDamage;
+		DamageInfo.CircumventInvulnerability = false;
+
+		return DamageInfo;
 }
